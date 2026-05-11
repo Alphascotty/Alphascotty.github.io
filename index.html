@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CyberSpace Interface</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Consolas, monospace;
+    }
+
+    body {
+        background: radial-gradient(circle at top, #07111f 0%, #010409 70%);
+        color: #00ffcc;
+        overflow: hidden;
+        height: 100vh;
+    }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        backdrop-filter: blur(2px);
+    }
+
+    h1 {
+        font-size: 4rem;
+        text-transform: uppercase;
+        letter-spacing: 8px;
+        color: #00ffee;
+        text-shadow:
+            0 0 5px #00ffee,
+            0 0 10px #00ffee,
+            0 0 20px #00ffee;
+        animation: flicker 2s infinite alternate;
+    }
+
+    p {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #8affff;
+        max-width: 700px;
+        line-height: 1.6;
+    }
+
+    .terminal {
+        margin-top: 35px;
+        width: 80%;
+        max-width: 800px;
+        background: rgba(0,0,0,0.7);
+        border: 1px solid #00ffcc;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 25px rgba(0,255,204,0.4);
+        text-align: left;
+    }
+
+    .line {
+        margin: 8px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 2px solid #00ffcc;
+        width: 0;
+        animation: typing 4s steps(40,end) forwards;
+    }
+
+    .line:nth-child(2) {
+        animation-delay: 1s;
+    }
+
+    .line:nth-child(3) {
+        animation-delay: 2s;
+    }
+
+    .line:nth-child(4) {
+        animation-delay: 3s;
+    }
+
+    .glow-btn {
+        margin-top: 35px;
+        padding: 14px 30px;
+        border: 2px solid #00ffee;
+        background: transparent;
+        color: #00ffee;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        box-shadow: 0 0 10px #00ffee;
+    }
+
+    .glow-btn:hover {
+        background: #00ffee;
+        color: #021018;
+        box-shadow:
+            0 0 15px #00ffee,
+            0 0 35px #00ffee;
+    }
+
+    @keyframes flicker {
+        from {
+            opacity: 0.8;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes typing {
+        to {
+            width: 100%;
+        }
+    }
+
+    .scanline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.03),
+            rgba(255,255,255,0.03) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+<div class="scanline"></div>
+
+<div class="container">
+    <h1>CYBERSPACE</h1>
+
+    <p>
+        Secure. Encrypted. Anonymous. Welcome to the digital frontier.
+        Simulated cyber-security terminal interface with matrix animation effects.
+    </p>
+
+    <div class="terminal">
+        <div class="line">> Initializing encrypted tunnel...</div>
+        <div class="line">> Bypassing firewall matrix...</div>
+        <div class="line">> Access granted :: root@cyberspace</div>
+        <div class="line">> System online...</div>
+    </div>
+
+    <button class="glow-btn">ENTER NETWORK</button>
+</div>
+
+<script>
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%^&*";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+    }
+
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#00ff99";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 35);
+
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+
+</body>
+</html>
